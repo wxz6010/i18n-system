@@ -1,24 +1,33 @@
-import React from "react";
-import { useRoutes } from "react-router-dom";
-// import Layouts from "../layouts";
-import About from "@/pages/about";
-import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-const Layouts = React.lazy(() => import("@/layouts"));
+import { lazy } from "react";
+import { RouteObject } from "react-router-dom";
 
-export default function () {
-  return useRoutes([
-    {
-      path: "/",
-      element: <Layouts />,
-      children: [
-        { index: true, element: <Home /> },
-        {
-          path: "/about",
-          element: <About />,
-        },
-      ],
-    },
-    { path: "/login", element: <Login /> },
-  ]);
-}
+const About = lazy(() => import("@/pages/about"));
+const Login = lazy(() => import("@/pages/user/login"));
+const routes: Array<RouteObject> = [
+  {
+    path: "/",
+    element: <About />,
+  },
+  {
+    path: "/user/login",
+    element: <Login />,
+  },
+];
+
+// export default function () {
+//   return useRoutes([
+//     {
+//       path: "/",
+//       element: lazyLoad("@/layout"),
+//       children: [
+//         { index: true, element: <Home /> },
+//         {
+//           path: "/about",
+//           element: <About />,
+//         },
+//       ],
+//     },
+//     { path: "/login", element: <Login /> },
+//   ]);
+// }
+export default routes;

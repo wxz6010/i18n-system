@@ -1,16 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-// import About from "./pages/about";
-// import Home from "./pages/Home";
-import Routes from "./Routes";
+import { BrowserRouter, useRoutes } from "react-router-dom";
+import routes from "./Routes";
+import './index.css'
 
-// import  '@/auto-appoint';
+function App() {
+  return useRoutes(routes);
+}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.Suspense fallback={<div>...loading</div>}>
     <BrowserRouter>
-      <Routes />
+      <App />
     </BrowserRouter>
   </React.Suspense>
 );

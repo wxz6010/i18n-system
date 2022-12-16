@@ -9,6 +9,9 @@ export declare interface PageInfo {
   
 }
 
-export declare function definePage(
+export  function definePage(
   info: Partial<PageInfo & RouteObject>
-): Partial<PageInfo & RouteObject>;
+): Partial<PageInfo & RouteObject>{
+  return info
+};
+

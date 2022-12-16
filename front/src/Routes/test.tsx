@@ -1,36 +1,31 @@
-import React from "react";
-// import { useRoutes } from "react-router-dom";
-import { RouteObject } from "react-router-dom";
-const CQdRxBUGoU = React.lazy(() => import("@/pages//"));
-const CpA$VkUgbCM = React.lazy(() => import("@/pages/about"));
-const CavM0rtuVJz = React.lazy(() => import("@/pages/home"));
-const CqjruVsXG4n = React.lazy(() => import("@/pages/moudles"));
-const CDHkcraDSJJ = React.lazy(() => import("@/pages/home/child/child"));
-const CTuAzoGYliE = React.lazy(() => import("@/pages/user/login"));
-const routes: Array<RouteObject> = [
-  {
-    path: "/",
-    element: <CQdRxBUGoU />,
-  },
-  {
-    path: "about",
-    element: <CpA$VkUgbCM />,
-  },
-  {
-    path: "home",
-    element: <CavM0rtuVJz />,
-  },
-  {
-    path: "moudles",
-    element: <CqjruVsXG4n />,
-  },
-  {
-    path: "home/child/child",
-    element: <CDHkcraDSJJ />,
-  },
-  {
-    path: "user/login",
-    element: <CTuAzoGYliE />,
-  },
-];
-export default routes;
+
+  import React from "react";
+  import { RouteObject } from "react-router-dom";
+  const CiRm9led4m = React.lazy(()=>import("@/pages/about"))
+const C0IJnxZLXNl = React.lazy(()=>import("@/pages/home"))
+const CH2OlWe_MzB = React.lazy(()=>import("@/pages/moudles"))
+const CZ9TQq0k51h = React.lazy(()=>import("@/pages/home/child/child"))
+const CRh_djsrGPy = React.lazy(()=>import("@/pages/user/login"))
+  const routes: Array<RouteObject> = [
+    {
+      path:"about",
+      element: <CiRm9led4m/>,
+    },
+{
+      path:"home",
+      element: <C0IJnxZLXNl/>,
+    },
+{
+      path:"moudles",
+      element: <CH2OlWe_MzB/>,
+    },
+{
+      path:"home/child/child",
+      element: <CZ9TQq0k51h/>,
+    },
+{
+      path:"user/login",
+      element: <CRh_djsrGPy/>,
+    }
+  ];
+  export default routes

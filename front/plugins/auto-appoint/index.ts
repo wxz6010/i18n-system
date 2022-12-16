@@ -13,7 +13,8 @@ export default function autoAppoint(): Plugin {
     },
     buildStart() {
       console.log("-render start");
-      // generateRoutes();
+      generateRoutes();
+
     },
   };
 }

@@ -1,0 +1,5 @@
+{
+	"devDependencies": {
+		"shortid": "^2.2.16"
+	}
+}

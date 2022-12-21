@@ -9,11 +9,11 @@ export default function autoAppoint(): Plugin {
     name: "vite-auto-appoint",
     enforce: "pre",
     handleHotUpdate(ctx) {
-      console.log("---",ctx.file);
+      // console.log("---",ctx.file);
     },
     buildStart() {
       console.log("-render start");
-      generateRoutes();
+      // generateRoutes();
     },
   };
 }

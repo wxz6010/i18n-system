@@ -1,10 +1,10 @@
 import { LoginForm, ProForm, ProFormText } from "@ant-design/pro-components";
 import { useEffect } from "react";
-import pageInfo from "./pageInfo";
+// import pageInfo from "./pageInfo";
 export default function () {
-  useEffect(()=>{
-    console.log(pageInfo);
-  },[])
+  // useEffect(()=>{
+  //   console.log(pageInfo);
+  // },[])
   return (
     <div className="flex min-h-screen justify-center items-center bg-slate-200">
       <LoginForm

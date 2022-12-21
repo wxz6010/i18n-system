@@ -1,11 +1,47 @@
-import { PageContainer, ProLayout } from "@ant-design/pro-components";
-import { Outlet } from "react-router-dom";
-import { Tag,Input,Button } from "antd";
+import {
+  MenuDataItem,
+  PageContainer,
+  ProLayout,
+} from "@ant-design/pro-components";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Tag, Input, Button } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+
+const route = {
+  routes: [
+    {
+      path: "/i18n",
+      name: "i18n多语言管理",
+      routes: [
+        {
+          name: "语言设置",
+          path: "/i18n/langue",
+        },
+        {
+          name: "业务模块",
+          path: "/i18n/moudle",
+        },
+        {
+          name: "词条设置",
+          path: "/i18n/terms",
+        },
+        {
+          name: "导出配置",
+          path: "/i18n/outsetting",
+        },
+      ],
+    },
+  ],
+};
+
 export default function () {
+  const navigate = useNavigate();
+
   return (
     <>
       <ProLayout
-        // route={defaultProps}
+        title="xx管理平台"
+        route={route}
         // location={{
         //   pathname,
         // }}
@@ -15,18 +51,18 @@ export default function () {
         menuItemRender={(item, dom) => (
           <a
             onClick={() => {
+              navigate(item.path!, {});
               // setPathname(item.path || "/welcome");
             }}
           >
             {dom}
           </a>
         )}
-        // avatarProps={{
-        //   icon: <UserOutlined />,
-        // }}
+        avatarProps={{
+          icon: <UserOutlined />,
+        }}
       >
-        <PageContainer
-          onBack={() => null}
+        {/* <PageContainer
           tags={<Tag color="blue">状态一</Tag>}
           header={{
             style: {
@@ -55,9 +91,9 @@ export default function () {
               操作一
             </Button>,
           ]}
-        >
-          <Outlet />
-        </PageContainer>
+        > */}
+        <Outlet />
+        {/* </PageContainer> */}
       </ProLayout>
     </>
   );

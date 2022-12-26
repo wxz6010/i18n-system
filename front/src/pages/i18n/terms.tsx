@@ -5,118 +5,80 @@ import {
   ProTable,
   TableDropdown,
 } from "@ant-design/pro-components";
-import { Button, Dropdown, Input, Space, Tag, Tree } from "antd";
-import { useRef } from "react";
-import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Button, Input, Tree } from "antd";
+import { useMemo, useRef } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { termsState, TermsType } from "@/models/terms";
+import { useSnapshot } from "valtio";
 
-type GithubIssueItem = {
-  url: string;
-  id: number;
-  number: number;
-  title: string;
-  labels: {
-    name: string;
-    color: string;
-  }[];
-  state: string;
-  comments: number;
-  created_at: string;
-  updated_at: string;
-  closed_at?: string;
-};
-
-const columns: ProColumns<GithubIssueItem>[] = [
-  {
-    dataIndex: "index",
-    valueType: "indexBorder",
-    width: 80,
-  },
-  {
-    title: "shortId",
-    dataIndex: "title",
-    width: 100,
-  },
-  {
-    title: "未翻译语言",
-    hideInTable: true,
-    valueType: "select",
-  },
-  {
-    title: "内容",
-    valueType: "text",
-    hideInTable: true,
-  },
-  {
-    title: "模块",
-    width: 100,
-    search: false,
-  },
-  {
-    title: "状态",
-    dataIndex: "state",
-    fixed: "left",
-    width: 100,
-    search:false
-  },
-  {
-    title: "中文",
-    search: false,
-    width: 100,
-  },
-  {
-    title: "英文",
-    search: false,
-    width: 100,
-  },
-  {
-    title: "英文1",
-    search: false,
-    width: 100,
-  },
-  {
-    title: "英文2",
-    search: false,
-    width: 100,
-  },
-  {
-    title: "英文3",
-    search: false,
-    width: 100,
-  },
-
-  {
-    title: "操作",
-    valueType: "option",
-    key: "option",
-    fixed: "right",
-    render: (text, record, _, action) => [
-      <a
-        key="editable"
-        onClick={() => {
-          action?.startEditable?.(record.id);
-        }}
-      >
-        编辑
-      </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
-        查看
-      </a>,
-      <TableDropdown
-        key="actionGroup"
-        onSelect={() => action?.reload()}
-        menus={[
-          { key: "copy", name: "复制" },
-          { key: "delete", name: "删除" },
-        ]}
-      />,
-    ],
-  },
-];
+import { languageState } from "@/models/language";
+import { buseeMoule, BusseModuleType } from "@/models/busseModule";
 
 function Right() {
   const actionRef = useRef<ActionType>();
+
+  const lanugesSource = useSnapshot(languageState);
+  const busseMoudleSource = useSnapshot(buseeMoule.buseeMoules);
+  const termsSource = useSnapshot(termsState);
+
+  const columns = useMemo(
+    () =>
+      [
+        {
+          title: "shortId",
+          dataIndex: "title",
+          width: 100,
+        },
+        {
+          title: "未翻译语言",
+          hideInTable: true,
+          valueType: "select",
+          dataIndex: "languageCode",
+          fieldProps: {
+            options: [
+              { value: "all", label: "所有语言" },
+              ...lanugesSource.map((it) => ({
+                value: it.code,
+                label: it.languagetype,
+              })),
+            ],
+          },
+        },
+        {
+          title: "模块",
+          width: 100,
+          search: false,
+        },
+
+        ...lanugesSource.map((it) => ({
+          title: it.languagetype!,
+          dataIndex: it.code!,
+          wdith: 130,
+        })),
+        {
+          title: "操作",
+          valueType: "option",
+          key: "option",
+          fixed: "right",
+          render: (text, record, _, action) => [
+            <a
+              key="editable"
+              onClick={() => {
+                action?.startEditable?.(record.id);
+              }}
+            >
+              编辑
+            </a>,
+          ],
+        },
+      ] as ProColumns<TermsType>[],
+    [lanugesSource]
+  );
+
+  console.log(columns);
+
   return (
-    <ProTable<GithubIssueItem>
+    <ProTable<TermsType>
       columns={columns}
       actionRef={actionRef}
       cardBordered
@@ -128,9 +90,9 @@ function Right() {
       //       params,
       //     });
       //   }}
-      editable={{
-        type: "multiple",
-      }}
+      // editable={{
+      //   type: "multiple",
+      // }}
       columnsState={{
         persistenceKey: "pro-table-singe-demos",
         persistenceType: "localStorage",
@@ -142,23 +104,23 @@ function Right() {
       search={{
         labelWidth: "auto",
       }}
-      options={{
-        setting: {
-          listsHeight: 400,
-        },
-      }}
-      form={{
-        // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-        syncToUrl: (values, type) => {
-          if (type === "get") {
-            return {
-              ...values,
-              created_at: [values.startTime, values.endTime],
-            };
-          }
-          return values;
-        },
-      }}
+      // options={{
+      //   setting: {
+      //     listsHeight: 400,
+      //   },
+      // }}
+      // form={{
+      //   // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+      //   syncToUrl: (values, type) => {
+      //     if (type === "get") {
+      //       return {
+      //         ...values,
+      //         created_at: [values.startTime, values.endTime],
+      //       };
+      //     }
+      //     return values;
+      //   },
+      // }}
       pagination={{
         pageSize: 5,
         onChange: (page) => console.log(page),

@@ -1,4 +1,5 @@
 import Layouts from "@/layouts";
+import Wapper from "@/layouts/wapper";
 import Langue from "@/pages/i18n/langue";
 import Module from "@/pages/i18n/module";
 import Outfile from "@/pages/i18n/outfile";
@@ -15,31 +16,36 @@ import { RouteObject } from "react-router-dom";
 
 const routes: Array<RouteObject> = [
   {
-    path: "/i18n",
-    element: <Layouts />,
+    path: "/",
+    element: <Wapper />,
     children: [
       {
-        path: "/i18n/langue",
-        element: <Langue />,
+        path: "/i18n",
+        element: <Layouts />,
+        children: [
+          {
+            path: "/i18n/langue",
+            element: <Langue />,
+          },
+          {
+            path: "/i18n/moudle",
+            element: <Module />,
+          },
+          {
+            path: "/i18n/terms",
+            element: <Terms />,
+          },
+          {
+            path: "/i18n/outsetting",
+            element: <Outfile />,
+          },
+        ],
       },
       {
-        path: "/i18n/moudle",
-        element: <Module />,
-      },
-      {
-        path: "/i18n/terms",
-        element: <Terms />,
-      },
-      {
-        path: "/i18n/outsetting",
-        element: <Outfile />,
+        path: "/user/login",
+        element: <Login />,
       },
     ],
-  },
-
-  {
-    path: "/user/login",
-    element: <Login />,
   },
 ];
 

@@ -13,22 +13,22 @@ const dataSource = [
 ];
 
 const moudelsTree = [
-    { title: "通用业务模块", key: "1221" },
-    {
-      title: "app 业务",
-      key: "app1",
-      children: [
-        {
-          title: "page1",
-          key: "app2",
-        },
-        {
-          title: "page2",
-          key: "app3",
-        },
-      ],
-    },
-  ];
+  { title: "通用业务模块", key: "1221" },
+  {
+    title: "app 业务",
+    key: "app1",
+    children: [
+      {
+        title: "page1",
+        key: "app2",
+      },
+      {
+        title: "page2",
+        key: "app3",
+      },
+    ],
+  },
+];
 
 export default function () {
   return (
@@ -55,7 +55,7 @@ export default function () {
           }}
           rowKey="name"
           headerTitle="导出配置项"
-        //   tooltip="基础列表的配置"
+          //   tooltip="基础列表的配置"
           dataSource={dataSource}
           showActions="hover"
           showExtra="hover"
@@ -75,14 +75,28 @@ export default function () {
       <ProCard>
         <Tree
           checkable
-        //   defaultExpandedKeys={["0-0-0", "0-0-1"]}
-        //   defaultSelectedKeys={["0-0-0", "0-0-1"]}
-        //   defaultCheckedKeys={["0-0-0", "0-0-1"]}
-        //   onSelect={onSelect}
-        //   onCheck={onCheck}
+          //   defaultExpandedKeys={["0-0-0", "0-0-1"]}
+          //   defaultSelectedKeys={["0-0-0", "0-0-1"]}
+          //   defaultCheckedKeys={["0-0-0", "0-0-1"]}
+          //   onSelect={onSelect}
+          //   onCheck={onCheck}
           treeData={moudelsTree}
         />
       </ProCard>
     </ProCard>
   );
 }
+
+/* <ProCard title="表格数据" headerBordered collapsible defaultCollapsed>
+        <ProFormField
+          ignoreFormItem
+          fieldProps={{
+            style: {
+              width: '100%',
+            },
+          }}
+          mode="read"
+          valueType="jsonCode"
+          text={JSON.stringify(dataSource)}
+        />
+      </ProCard> */

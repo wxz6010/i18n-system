@@ -3,9 +3,16 @@ import {
   PageContainer,
   ProLayout,
 } from "@ant-design/pro-components";
-import { Outlet, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+  useMatch,
+  useNavigate,
+} from "react-router-dom";
 import { Tag, Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 
 const route = {
   routes: [
@@ -36,15 +43,20 @@ const route = {
 
 export default function () {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  // todo: 配置 index
+  const m = useMatch("/i18n");
+  if (m) {
+    return <Navigate to="/i18n/langue" />;
+  }
   return (
     <>
       <ProLayout
         title="xx管理平台"
         route={route}
-        // location={{
-        //   pathname,
-        // }}
+        location={{
+           pathname:location.pathname,
+        }}
         fixSiderbar
         headerRender={false}
         onMenuHeaderClick={(e) => console.log(e)}

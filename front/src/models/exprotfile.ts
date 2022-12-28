@@ -4,13 +4,13 @@ import { buseeMoule } from "./busseModule";
 import { languageState } from "./language";
 import { termsState } from "./terms";
 
-type exportType = { code: string; maps: any }[];
+export type ExportType = { code: string; maps: any }[];
 
 export type ExportFileType = {
   id: string;
   name?: "string";
   selectModuelsKeys?: string[];
-  exportMaps?: exportType;
+  exportMaps?: ExportType;
 };
 
 export const exportState = proxy<ExportFileType[]>(
@@ -40,7 +40,7 @@ export function generateMaps() {
     const terms = termsState.filter((x) =>
       exportfile.selectModuelsKeys!.includes(x.busseId)
     );
-    let arr: exportType = [];
+    let arr: ExportType = [];
 
     for (let language of languageState) {
       arr.push({

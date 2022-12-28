@@ -1,11 +1,13 @@
+import { JsonMapModal } from "@/compoents/JsonMapModule";
 import { NewExportModal } from "@/compoents/NewExprotFile";
 import { buseeMoule } from "@/models/busseModule";
 import {
   changeSelectItems,
   ExportFileType,
   exportState,
+  generateMaps,
 } from "@/models/exprotfile";
-import { ProCard, ProList } from "@ant-design/pro-components";
+import { ProCard, ProFormField, ProList } from "@ant-design/pro-components";
 import NiceModal from "@ebay/nice-modal-react";
 import { Button, List, message, Tree } from "antd";
 import { Key, ReactText, useEffect, useState } from "react";
@@ -69,8 +71,19 @@ export default function () {
             avatar: {
               dataIndex: "image",
             },
-            description: {
-              dataIndex: "desc",
+            actions: {
+              render: (_, _en, idx) => {
+                // const data = exportState[idx].exportMaps;
+                // console.log('121212',data)
+                return [
+                  <a
+                    key={"query"}
+                    onClick={() => NiceModal.show(JsonMapModal, {idx})}
+                  >
+                    查看生成文件
+                  </a>,
+                ];
+              },
             },
           }}
           key={"id"}
@@ -83,7 +96,13 @@ export default function () {
         />
       </ProCard>
       <ProCard split="horizontal">
-        <ProCard extra={<Button type="primary">生成</Button>}></ProCard>
+        <ProCard
+          extra={
+            <Button type="primary" onClick={generateMaps}>
+              生成
+            </Button>
+          }
+        ></ProCard>
         <ProCard>
           <Tree
             checkable

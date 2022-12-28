@@ -39,11 +39,24 @@ class BusseModule {
     }
 
     if (model.id.indexOf("new") > 0) {
-      id =  `${(Math.random() * 1000000).toFixed(0) }_${ms.length}`;
+      id = `${(Math.random() * 1000000).toFixed(0)}_${ms.length}`;
       ms.push({ ...model, id });
     } else {
       const index = ms.findIndex((x) => x.id == model.id);
       ms[index] = model;
+    }
+  }
+
+  searchById(id: string) {
+    const stack = [...this.buseeMoules];
+    while (stack.length) {
+      const temp = stack.shift();
+      if (temp?.children) {
+        stack.concat(temp.children);
+      }
+      if (temp?.id == id) {
+        return temp;
+      }
     }
   }
 }

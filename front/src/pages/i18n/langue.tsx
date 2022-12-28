@@ -47,7 +47,6 @@ export default function () {
       <EditableProTable<Language>
         rowKey="id"
         headerTitle="多语言配置"
-        maxLength={5}
         scroll={{
           x: 960,
         }}

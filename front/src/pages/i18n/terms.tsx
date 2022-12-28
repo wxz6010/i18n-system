@@ -1,33 +1,82 @@
 import {
   ActionType,
+  ParamsType,
   ProCard,
   ProColumns,
   ProTable,
-  TableDropdown,
 } from "@ant-design/pro-components";
 import { Button, Input, Tree } from "antd";
-import { useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { termsState, TermsType } from "@/models/terms";
 import { useSnapshot } from "valtio";
 
 import { languageState } from "@/models/language";
-import { buseeMoule, BusseModuleType } from "@/models/busseModule";
+import { buseeMoule } from "@/models/busseModule";
 
-function Right() {
+import NiceModal from "@ebay/nice-modal-react";
+import { TermresModlId, TermsModal } from "@/compoents/TermsModal";
+
+function Right({ sin, reset }: { sin: string; reset: () => void }) {
   const actionRef = useRef<ActionType>();
-
   const lanugesSource = useSnapshot(languageState);
-  const busseMoudleSource = useSnapshot(buseeMoule.buseeMoules);
   const termsSource = useSnapshot(termsState);
+  const [dataSrouce, $data] = useState(termsSource);
 
+  const search = useCallback(
+    (data: ParamsType) => {
+      const keys = Object.keys(data);
+      if (keys.length > 0) {
+        const filters = termsSource.filter((terms: any) =>
+          keys.reduce((acc, crr) => {
+            // 检索未翻译的语言
+            if (crr === "languageCode") {
+              const code = data[crr];
+              //只要有一个未翻译
+              if (code == "all") {
+                for (let lan of lanugesSource) {
+                  if (!terms[lan.code!]) {
+                    return true;
+                  }
+                }
+                return false;
+              }
+              //单一未翻译语言
+              return acc && !terms[data[crr]];
+            }
+            return acc && terms[crr] == data[crr];
+          }, true)
+        );
+        $data(filters);
+      }
+    },
+    [lanugesSource, sin]
+  );
+
+  // useEffect(() => {
+  //   // actionRef.current?.reset?.();
+  //   $data(termsSource);
+  // }, [termsSource]);
+
+  useEffect(() => {
+    if (sin && sin != "rest") {
+      $data(termsSource.filter((x) => x.busseId == sin));
+      actionRef.current?.reset?.();
+    } else {
+      $data(termsSource);
+    }
+  }, [sin, termsSource]);
+
+  // console.log(sin)
   const columns = useMemo(
     () =>
       [
         {
           title: "shortId",
-          dataIndex: "title",
-          width: 100,
+          dataIndex: "id",
+          width: 110,
+          fixed: "left",
+          copyable: true,
         },
         {
           title: "未翻译语言",
@@ -48,12 +97,18 @@ function Right() {
           title: "模块",
           width: 100,
           search: false,
+          dataIndex: "busseId",
+          fixed: "left",
+          renderText(text, record, index, action) {
+            return buseeMoule.searchById(text)?.name || text;
+          },
         },
 
         ...lanugesSource.map((it) => ({
           title: it.languagetype!,
           dataIndex: it.code!,
-          wdith: 130,
+          width: 150,
+          ellipsis: true,
         })),
         {
           title: "操作",
@@ -63,9 +118,7 @@ function Right() {
           render: (text, record, _, action) => [
             <a
               key="editable"
-              onClick={() => {
-                action?.startEditable?.(record.id);
-              }}
+              onClick={() => NiceModal.show(TermresModlId, record)}
             >
               编辑
             </a>,
@@ -75,99 +128,74 @@ function Right() {
     [lanugesSource]
   );
 
-  console.log(columns);
-
   return (
     <ProTable<TermsType>
       columns={columns}
       actionRef={actionRef}
+      scroll={{ x: 1300 }}
       cardBordered
-      //   request={async (params = {}, sort, filter) => {
-      //     console.log(sort, filter);
-      //     return request<{
-      //       data: GithubIssueItem[];
-      //     }>("https://proapi.azurewebsites.net/github/issues", {
-      //       params,
-      //     });
-      //   }}
-      // editable={{
-      //   type: "multiple",
-      // }}
-      columnsState={{
-        persistenceKey: "pro-table-singe-demos",
-        persistenceType: "localStorage",
-        onChange(value) {
-          console.log("value: ", value);
-        },
-      }}
       rowKey="id"
       search={{
-        labelWidth: "auto",
+        labelWidth: 100,
       }}
-      // options={{
-      //   setting: {
-      //     listsHeight: 400,
-      //   },
-      // }}
-      // form={{
-      //   // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-      //   syncToUrl: (values, type) => {
-      //     if (type === "get") {
-      //       return {
-      //         ...values,
-      //         created_at: [values.startTime, values.endTime],
-      //       };
-      //     }
-      //     return values;
-      //   },
-      // }}
+      dataSource={dataSrouce}
       pagination={{
         pageSize: 5,
         onChange: (page) => console.log(page),
       }}
       dateFormatter="string"
       toolBarRender={() => [
-        <Button key="button" icon={<PlusOutlined />} type="primary">
+        <Button
+          onClick={() => NiceModal.show(TermsModal)}
+          key="button"
+          icon={<PlusOutlined />}
+          type="primary"
+        >
           新建
         </Button>,
       ]}
+      onSubmit={search}
+      onReset={() => reset()}
     />
   );
 }
 
-const moudelsTree = [
-  { title: "通用业务模块", key: "1221" },
-  {
-    title: "app 业务",
-    key: "app1",
-    children: [
-      {
-        title: "page1",
-        key: "app2",
-      },
-      {
-        title: "page2",
-        key: "app3",
-      },
-    ],
-  },
-];
-
 export default function () {
+  const moduleSource = useSnapshot(buseeMoule.buseeMoules);
+  const [inp, $in] = useState("");
+  const [sl, $sl] = useState("");
+
+  const resest = useCallback(() => {
+    console.log("rest_parent");
+    $sl("rest");
+  }, []);
+
   return (
-    <ProCard split="vertical">
-      <ProCard colSpan="200px">
-        <Input.Search style={{ marginBottom: 8 }} placeholder="Search" />
-        <Tree
-          //   onExpand={onExpand}
-          //   expandedKeys={expandedKeys}
-          //   autoExpandParent={autoExpandParent}
-          treeData={moudelsTree}
+    <div className=" flex flex-row">
+      <div className="flex flex-col" style={{ width: "20%", marginRight: 10 }}>
+        <Input.Search
+          value={inp}
+          onChange={(e) => $in(e.target.value)}
+          style={{ marginBottom: 8 }}
+          placeholder="Search"
         />
-      </ProCard>
-      <ProCard>
-        <Right />
-      </ProCard>
-    </ProCard>
+        <Tree
+          autoExpandParent={true}
+          filterTreeNode={(n) => {
+            //@ts-ignore
+            return inp !== "" && n.name.includes(inp);
+          }}
+          onSelect={(e) => (e.length > 0 ? $sl(e[0].toString()) : $sl(""))}
+          selectedKeys={[sl]}
+          // @ts-ignore
+          treeData={moduleSource}
+          fieldNames={{ key: "id", title: "name" }}
+        ></Tree>
+      </div>
+
+      <div style={{ width: "80%" }}>
+        <Right sin={sl} reset={resest} />
+      </div>
+    </div>
   );
 }

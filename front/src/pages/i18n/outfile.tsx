@@ -1,46 +1,48 @@
+import { NewExportModal } from "@/compoents/NewExprotFile";
+import { buseeMoule } from "@/models/busseModule";
+import {
+  changeSelectItems,
+  ExportFileType,
+  exportState,
+} from "@/models/exprotfile";
 import { ProCard, ProList } from "@ant-design/pro-components";
-import { Button, List, Tree } from "antd";
-
-const dataSource = [
-  {
-    name: "app 导出文件",
-    desc: "123123.map.json",
-  },
-  {
-    name: "pc 导出文件",
-    desc: "123123.map.json",
-  },
-];
-
-const moudelsTree = [
-  { title: "通用业务模块", key: "1221" },
-  {
-    title: "app 业务",
-    key: "app1",
-    children: [
-      {
-        title: "page1",
-        key: "app2",
-      },
-      {
-        title: "page2",
-        key: "app3",
-      },
-    ],
-  },
-];
+import NiceModal from "@ebay/nice-modal-react";
+import { Button, List, message, Tree } from "antd";
+import { Key, ReactText, useEffect, useState } from "react";
+import { useSnapshot } from "valtio";
 
 export default function () {
+  const exportsSource = useSnapshot(exportState);
+  const [selectedItem, $left] = useState<ExportFileType>();
+  const [keys, $keys] = useState<Key[]>([]);
+
+  useEffect(() => {
+    $keys(selectedItem?.selectModuelsKeys || []);
+  }, [selectedItem]);
+
+  const setKeys = (keys: Key[]) => {
+    if (selectedItem) {
+      // @ts-ignore
+      changeSelectItems(selectedItem?.id, keys);
+      $keys(keys);
+    } else {
+      message.error("请先选择左侧需要修改的文件");
+    }
+  };
+
   return (
     <ProCard split="vertical">
       <ProCard colSpan="400px">
         <ProList<any>
           toolBarRender={() => {
             return [
-              <Button key="add" type="primary">
+              <Button
+                key="add"
+                type="primary"
+                onClick={() => NiceModal.show(NewExportModal)}
+              >
                 新建
               </Button>,
-              <Button>生成</Button>,
             ];
           }}
           onRow={(record: any) => {
@@ -56,7 +58,8 @@ export default function () {
           rowKey="name"
           headerTitle="导出配置项"
           //   tooltip="基础列表的配置"
-          dataSource={dataSource}
+          // @ts-ignore
+          dataSource={exportsSource}
           showActions="hover"
           showExtra="hover"
           metas={{
@@ -70,18 +73,28 @@ export default function () {
               dataIndex: "desc",
             },
           }}
+          key={"id"}
+          rowSelection={{
+            onChange: (e) => !e.length && $left(undefined),
+            onSelect: $left,
+            type: "radio",
+            columnTitle: <div />,
+          }}
         />
       </ProCard>
-      <ProCard>
-        <Tree
-          checkable
-          //   defaultExpandedKeys={["0-0-0", "0-0-1"]}
-          //   defaultSelectedKeys={["0-0-0", "0-0-1"]}
-          //   defaultCheckedKeys={["0-0-0", "0-0-1"]}
-          //   onSelect={onSelect}
-          //   onCheck={onCheck}
-          treeData={moudelsTree}
-        />
+      <ProCard split="horizontal">
+        <ProCard extra={<Button type="primary">生成</Button>}></ProCard>
+        <ProCard>
+          <Tree
+            checkable
+            //@ts-ignore
+            treeData={buseeMoule.buseeMoules}
+            fieldNames={{ title: "name", key: "id" }}
+            //@ts-ignore
+            onCheck={setKeys}
+            checkedKeys={keys}
+          />
+        </ProCard>
       </ProCard>
     </ProCard>
   );

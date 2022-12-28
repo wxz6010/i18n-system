@@ -14,7 +14,7 @@ export default () => {
   const columns: ProColumns<BusseModuleType>[] = [
     {
       title: "业务名称",
-      dataIndex: "title",
+      dataIndex: "name",
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:

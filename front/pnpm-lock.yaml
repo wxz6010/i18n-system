@@ -3,10 +3,12 @@ lockfileVersion: 5.4
 specifiers:
   '@ant-design/icons': ^4.8.0
   '@ant-design/pro-components': ^2.3.47
+  '@ebay/nice-modal-react': ^1.2.8
   '@types/lodash-es': ^4.17.6
   '@types/node': ^18.11.15
   '@types/react': ^18.0.26
   '@types/react-dom': ^18.0.9
+  '@types/shortid': ^0.0.29
   '@vitejs/plugin-react': ^3.0.0
   '@vitejs/plugin-react-swc': ^3.0.0
   antd: ^5.0.7
@@ -27,6 +29,7 @@ specifiers:
 
 dependencies:
   '@ant-design/pro-components': 2.3.47_6rfq2pnhqj44uztbqg7rdcd5m4
+  '@ebay/nice-modal-react': 1.2.8_biqbaboplfbrettd7655fr4n2y
   antd: 5.0.7_biqbaboplfbrettd7655fr4n2y
   lodash-es: 4.17.21
   react: 18.2.0
@@ -40,6 +43,7 @@ devDependencies:
   '@types/node': 18.11.15
   '@types/react': 18.0.26
   '@types/react-dom': 18.0.9
+  '@types/shortid': 0.0.29
   '@vitejs/plugin-react': 3.0.0_vite@4.0.0
   '@vitejs/plugin-react-swc': 3.0.0_vite@4.0.0
   aslemammad-vite-plugin-macro: 1.0.0_vite@4.0.0
@@ -595,6 +599,16 @@ packages:
     resolution: {integrity: sha512-tlJpwF40DEQcfR/QF+wNMVyGMaO9FQp6Z1Wahj4Gk3CJQYHwA2xVG7iKDFdW6zuxZY9XWOpGcfNCTsX4McOsOg==}
     engines: {node: '>=10'}
 
+  /@ebay/nice-modal-react/1.2.8_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-5C+9/zWsaYeDMI3HLVIg2clQzVmhepxOGeVdAWOyww2GZJ4Cl3NgzPHyO70SIkG0a4aXvUruyDnPM+jx7DzSJg==}
+    peerDependencies:
+      react: '>16.8.0'
+      react-dom: '>16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /@emotion/hash/0.8.0:
     resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==}
     dev: false
@@ -1078,6 +1092,10 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
+    dev: true
+
+  /@types/shortid/0.0.29:
+    resolution: {integrity: sha512-9BCYD9btg2CY4kPcpMQ+vCR8U6V8f/KvixYD5ZbxoWlkhddNF5IeZMVL3p+QFUkg+Hb+kPAG9Jgk4bnnF1v/Fw==}
     dev: true
 
   /@umijs/route-utils/2.2.2:
